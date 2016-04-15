@@ -29,5 +29,6 @@ If you are new to LLVM, you may find below resources useful:
 * [Adrian Sampson's Blog on LLVM](http://adriansampson.net/blog/llvm.html)
 * [Building LLVM with CMake](http://llvm.org/docs/CMake.html)
 * [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
+* [LLVM’s Analysis and Transform Passes](http://llvm.org/docs/Passes.html)
 
 
