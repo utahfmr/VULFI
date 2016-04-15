@@ -6,7 +6,6 @@ Vulfi supports all major LLVM versions starting from LLVM version 3.2. The top l
 
 
 ## Cite our work
-
 When you use VULFI in your research work, please cite our work using below citation. More information about the paper could be found [here.](http://www.cs.utah.edu/~vcsharma/pubs/dpdns2016-shrg.pdf)
 
 ```
@@ -19,3 +18,14 @@ When you use VULFI in your research work, please cite our work using below citat
 ```
 ## Code documentation
 The latest doxygen code documentation of VULFI can be found [here.](http://formalverification.cs.utah.edu/fmr/vulfi/html/)
+
+
+## LLVM Resources
+If you are new to LLVM, you may find below resources useful:
+* [Getting started with LLVM ](http://llvm.org/docs/GettingStarted.html)
+* [Building LLVM with CMake](http://llvm.org/docs/CMake.html)
+* [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
+* [Writing an LLVM Pass](http://llvm.org/docs/WritingAnLLVMPass.html)
+* [LLVM Programmer's Manual](http://llvm.org/docs/ProgrammersManual.html)
+* [LLVM Language Reference](http://llvm.org/docs/LangRef.html)
+* [Adrian Sampson's Blog on LLVM](http://adriansampson.net/blog/llvm.html)
