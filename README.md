@@ -122,6 +122,44 @@ Note that the variables VULFI_SRC_DIR and VULFI_INSTALL_DIR must be assigned abs
 
 
 ### Steps for using VULFI for Fault Injection
+Before reading the below documentation, please ensure that you have already executed the examples explained in the previous section, and also inspected the "common.mk" files to understand how the instrumentation and execution processes are carried out. You could pretty much use those "common.mk" files to bootstrap your fault injection process. 
+
+
+##### Step 1: Adding function calls.
+
+First, locate the code file which has the main() function. 
+
+If your target program is a C program then add below code snippet at the begining of the code file.
+
+```
+#ifdef INST
+extern int printFaultSitesData(void);
+extern int printFaultInjectionData(void);
+#endif
+```
+
+If your target program is a C++ program then add below code snippet at the begining of the code file.
+
+
+```
+#ifdef INST
+extern "C" int printFaultSitesData(void);
+extern "C" int printFaultInjectionData(void);
+#endif
+```
+
+Now, in the main() function, add below code snippet before all the return calls.
+
+```
+#ifdef INST
+  printFaultSitesData();
+  printFaultInjectionData();
+#endif  
+```
+
+
+##### Step 2: Instrumentation.
+##### Step 2: Execution.
 
 ```
 python driver.py --help
