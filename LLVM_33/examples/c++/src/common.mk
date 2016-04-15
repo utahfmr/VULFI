@@ -4,7 +4,7 @@
 # Example specific variable initializations
 # FN_LIST, EX_NAME
 
-EX_DIR = $(VULFI_SRC_DIR)/examples/c++/src/$(EX_NAME)/
+EX_DIR = .
 BUILD_DIR = $(EX_DIR)/bc
 
 # compiler and flags

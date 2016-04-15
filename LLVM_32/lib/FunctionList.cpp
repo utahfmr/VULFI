@@ -41,7 +41,7 @@ void FunctionList::fillTargetFnList(Module *M, CLData *Cl){
     DEBUG(errs() << "\nFunction name: " << fnName);
     errs() << fnName << " ";
     if(fnName.compare(fnMain)==0){ // main() function is never mangled
-      this->fiFnMain = it;
+      this->fiFnMain = *&it;
     }
 
     bool mangledFlag = false;
@@ -64,36 +64,36 @@ void FunctionList::fillTargetFnList(Module *M, CLData *Cl){
     // which are called at runtime
     if(this->getFnMatch(fnName,fnISEIntTy1,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for IntTy1\n");
-      this->fiFnIntTy1 = it;
+      this->fiFnIntTy1 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy8,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for IntTy8\n");
-      this->fiFnIntTy8 = it;
+      this->fiFnIntTy8 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy16,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for IntTy16\n");
-      this->fiFnIntTy16 = it;
+      this->fiFnIntTy16 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy32,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for IntTy32\n");
-      this->fiFnIntTy32 = it;
+      this->fiFnIntTy32 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy64,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for IntTy64\n");
-      this->fiFnIntTy64 = it;
+      this->fiFnIntTy64 = *&it;
     } else if(this->getFnMatch(fnName,fnISEFloatTy,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for FloatTy\n");
-      this->fiFnFloatTy = it;
+      this->fiFnFloatTy = *&it;
     } else if(this->getFnMatch(fnName,fnISEDoubleTy,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located injector for DoubleTy\n");
-      this->fiFnDoubleTy = it;
+      this->fiFnDoubleTy = *&it;
     } else if(this->getFnMatch(fnName,fnISEVectorIdx,false)){
       DEBUG(errs() << "\nSuccessfully located injector for VectorIdx\n");
-      this->fiFnVectorIdx = it;
+      this->fiFnVectorIdx = *&it;
     } else if(this->getFnMatch(fnName,fnPrintStats,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located function reference used \
 					for printing fault site statistics\n");
-      this->fiFnPrintStats = it;
+      this->fiFnPrintStats = *&it;
     } else if(this->getFnMatch(fnName,fnPrintInjStats,mangledFlag)){
       DEBUG(errs() << "\nSuccessfully located function reference used \
 					for printing fault injection statistics\n");
-      this->fiFnPrintInjStats = it;
+      this->fiFnPrintInjStats = *&it;
     }
   }
   return;

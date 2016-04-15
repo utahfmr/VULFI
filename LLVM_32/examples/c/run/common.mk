@@ -4,7 +4,7 @@
 # Example specific variable initializations
 # EX_NAME, FCP
 
-EX_DIR = $(VULFI_SRC_DIR)/examples/c/src/$(EX_NAME)/
+EX_DIR = ../../src/$(EX_NAME)
 BUILD_DIR = $(EX_DIR)/bc
 
 CMD1 = "result_noerror.dat"
@@ -17,8 +17,7 @@ OUT_DATA = "result_error_data.dat"
 OUT_CTRL = "result_error_ctrl.dat"
 OUT_ADDR = "result_error_addr.dat"
 
-
-all: ex1 ex2 ex3
+all: $(TARGETS)
 
 ex1:
 	python $(VULFI_SRC_DIR)/scripts/driver.py -e -c $(FCP) \

@@ -43,7 +43,7 @@ void FunctionList::fillTargetFnList(Module *M, CLData *Cl){
     #endif
     errs() << fnName << " ";
     if(fnName.compare(fnMain)==0){ // main() function is never mangled
-      this->fiFnMain = it;
+      this->fiFnMain = *&it;
     }
 
     bool mangledFlag = false;
@@ -67,25 +67,25 @@ void FunctionList::fillTargetFnList(Module *M, CLData *Cl){
     // Fill reference to fault injection functions
     // which are called at runtime
     if(this->getFnMatch(fnName,fnISEIntTy1,mangledFlag)){
-      this->fiFnIntTy1 = it;
+      this->fiFnIntTy1 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy8,mangledFlag)){
-      this->fiFnIntTy8 = it;
+      this->fiFnIntTy8 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy16,mangledFlag)){
-      this->fiFnIntTy16 = it;
+      this->fiFnIntTy16 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy32,mangledFlag)){
-      this->fiFnIntTy32 = it;
+      this->fiFnIntTy32 = *&it;
     } else if(this->getFnMatch(fnName,fnISEIntTy64,mangledFlag)){
-      this->fiFnIntTy64 = it;
+      this->fiFnIntTy64 = *&it;
     } else if(this->getFnMatch(fnName,fnISEFloatTy,mangledFlag)){
-      this->fiFnFloatTy = it;
+      this->fiFnFloatTy = *&it;
     } else if(this->getFnMatch(fnName,fnISEDoubleTy,mangledFlag)){
-      this->fiFnDoubleTy = it;
+      this->fiFnDoubleTy = *&it;
     } else if(this->getFnMatch(fnName,fnISEVectorIdx,false)){
-      this->fiFnVectorIdx = it;
+      this->fiFnVectorIdx = *&it;
     } else if(this->getFnMatch(fnName,fnPrintStats,mangledFlag)){
-      this->fiFnPrintStats = it;
+      this->fiFnPrintStats = *&it;
     } else if(this->getFnMatch(fnName,fnPrintInjStats,mangledFlag)){
-      this->fiFnPrintInjStats = it;
+      this->fiFnPrintInjStats = *&it;
     }
   }
   return;

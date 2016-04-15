@@ -12,13 +12,17 @@
 /// the users.
 ///
 //===----------------------------------------------------------------------===//
-#include <llvm/Support/CommandLine.h>
-#include <llvm/PassManager.h>
-#include <llvm/Module.h>
+
+// user defined headers
 #include "Dispatcher.h"
 #include "CLData.h"
 #include "FunctionList.h"
 #include "InstrSeqGen.h"
+
+// llvm headers
+#include <llvm/Support/CommandLine.h>
+#include <llvm/PassManager.h>
+#include <llvm/Module.h>
 
 using namespace llvm;
 

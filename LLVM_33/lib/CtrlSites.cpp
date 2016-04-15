@@ -30,15 +30,15 @@ set<Instruction*> CtrlSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
     for(inst_iterator it=inst_begin(fnList[i]),itEnd=inst_end(fnList[i]);
 	it!=itEnd;it++){
       Instruction* currentInstr = &*it;
-      if(currentInstr->getType()->isIntegerTy(1)) ctrlInstrCount++;
-      if(currentInstr->getType()->isVectorTy())
-	if(currentInstr->getType()->getScalarType()->isIntegerTy(1)) vctrlInstrCount++;
-
       //Skip PHI Nodes
       if(dyn_cast<PHINode>(currentInstr) ||
 	 dyn_cast<LandingPadInst>(currentInstr)){
 	continue;
       }
+      
+      if(currentInstr->getType()->isIntegerTy(1)) ctrlInstrCount++;
+      if(currentInstr->getType()->isVectorTy())
+	if(currentInstr->getType()->getScalarType()->isIntegerTy(1)) vctrlInstrCount++;
 
       // Avoid IntegerTy(8) as there is not such type in C/C++ or ISPC
       // Also avoid directly injecting faults into compare instructions
@@ -88,9 +88,6 @@ set<Instruction*> CtrlSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
       this->writeDbgData(currentInstr,Cl,"ctrl");
     }
   }
-
-  errs() << "\nNumber of scalar control instructions: " << ctrlInstrCount ;
-  errs() << "\nNumber of vector control instructions: " << vctrlInstrCount << "\n";
   return ctrlsites;
 }
 

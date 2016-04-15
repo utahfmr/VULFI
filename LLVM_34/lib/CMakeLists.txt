@@ -28,4 +28,4 @@ CLData.cpp
 CtrlInstrList.cpp
 Dispatcher.cpp)
 
-install(TARGETS LLVMVulfi DESTINATION CMAKE_INSTALL_PREFIX)
+install(TARGETS LLVMVulfi DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
