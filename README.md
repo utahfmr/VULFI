@@ -99,24 +99,32 @@ optional arguments:
   --rslt RSLT           name of the output file where result will be written
   --ficsv FICSV         name of the input csv file containing intermediate fi data.
   --fia {cbr,abr,msk}   fault injection algorithm, valid options: 
-                         	cbr - cumulative byte ordering; target one or more contiguous bytes for fault injection.
+                         	cbr - cumulative byte ordering; target one or more contiguous 
+                         	bytes for fault injection.
                         	abr - absolute bit range;target a bit-range for fault injection
   --fib {1,2,3,4,5,6,7,8}
-                        no. of contiguous bytes to be considered for fault injection
-                        	Note:this option must be provided when using -fia=cbr
-  --fid {msb,lsb}       direction from which no. of contiguous bytes to be considered for fault injection
-                        	Note:this option must be provided when using -fia=cbr
+                        number of contiguous bytes to be considered for fault injection
+                        Note:this option must be provided when using -fia=cbr
+                        
+  --fid {msb,lsb}       direction from which no. of contiguous bytes to be considered for 
+                        fault injection
+                        Note:this option must be provided when using -fia=cbr
+                        
   --fbu FBU             upper bound for the fault injection bit-range.
-                        	Note:this option must be provided when using -fia=abr
+                        Note:this option must be provided when using -fia=abr
+                        
   --fbl FBL             lower bound for the fault injection bit-range.
-                        	Note:this option must be provided when using -fia=abr
+                        Note:this option must be provided when using -fia=abr
   --np NUM_PROB         numerator of fault injection probability expressed as a fraction.
   --dp DEN_PROB         denominator of fault injection probability expressed as a fraction.
   --ff {eql,max,min,nlm}
                         puts restriction on no. of faults that will be injected, valid options:
-                        	eql - execution with fault injection count equal to the val provided by --fc.
-                        	max - execution with fault injection count at max equal to the val provided by --fc.
-                        	min - execution with fault injection count at least equal to the val provided by --fc.
+                        	eql - execution with fault injection count equal to the val 
+                        	provided by --fc.
+                        	max - execution with fault injection count at max equal to the val 
+                        	provided by --fc.
+                        	min - execution with fault injection count at least equal to the val 
+                        	provided by --fc.
                         	nlm - execution with fault injection count having no limit.
   --fc FICOUNT          fault injection countm this value is used in combination with --ff.
 ```
