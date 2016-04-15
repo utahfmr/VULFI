@@ -31,6 +31,18 @@ If you are new to LLVM, you may find below resources useful:
 * [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
 * [LLVM’s Analysis and Transform Passes](http://llvm.org/docs/Passes.html)
 
+## People 
+### Faculty & Collaborators
+* [Ganesh Gopalakrishnan](http://www.cs.utah.edu/~ganesh/)
+* [Sriram Krishnamoorthy](http://hpc.pnl.gov/people/sriram/)
+
+### Developers
+* [Vishal Sharma](https://sites.google.com/site/vishalutah/home)
+* Ian Briggs
+* Vinu Joseph
+* Arnab Das
+
+
 ## Contact Us
 If you have feedback or would like to report an issue, please [email us](
 mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.google.com/forum/#!forum/vulfi-dev).
