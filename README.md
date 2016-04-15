@@ -2,7 +2,7 @@
 ## Introduction
 VULFI is an open-source instruction-level fault injection framework developed using [LLVM compiler infrastructure](http://llvm.org/). VULFI performs fault injection at LLVM's intermediate representation (IR) level. It currently supports C, C++, [ISPC](https://ispc.github.io/), [OpenCL](https://www.khronos.org/opencl/), and MPI-C languages. Note that to target an OpenCL program for fault injection using VULFI, the program should be compiled using [Intel's OpenCL Compiler](https://software.intel.com/en-us/node/530783). Conceptually, VULFI can target any high level language which can be compiled to [LLVM's intermediate representation](http://llvm.org/docs/LangRef.html).
 
-Vulfi supports all major LLVM versions starting from LLVM version 3.2. The top level vulfi directory has a master folder which contains the latest source code of VULFI supporting latest [LLVM version](http://llvm.org/svn/llvm-project/llvm/trunk). The top level directory has additional folders starting with the prefix "LLVM_" with each folder containing vulfi source code supporting the respective version of LLVM. For example, the folder LLVM_32 contains the vulfi source code supporting LLVM version 3.2. It is our intention to keep vulfi update supporting the latest LLVM [development branch] (http://llvm.org/svn/llvm-project/llvm/trunk) while also maintaining reasonable support for older versions of LLVM.
+VULFI supports all major LLVM versions starting from LLVM version 3.2. The top level VULFI directory has a master folder which contains the latest source code of VULFI supporting latest [LLVM version](http://llvm.org/svn/llvm-project/llvm/trunk). Also, the top level directory has additional folders starting with the prefix "LLVM_" with each folder containing VULFI source code supporting the respective version of LLVM. For example, the folder LLVM_32 contains the VULFI source code supporting LLVM version 3.2. It is our intention to keep VULFI up-to-date supporting the latest LLVM [development branch] (http://llvm.org/svn/llvm-project/llvm/trunk) while also maintaining reasonable support for older versions of LLVM.
 
 ## People 
 ### Faculty & Collaborators
@@ -16,7 +16,7 @@ Vulfi supports all major LLVM versions starting from LLVM version 3.2. The top l
 * Arnab Das
 
 ## Cite our work
-When you use VULFI in your research work, please cite our work using below citation. More information about the paper could be found [here.](http://www.cs.utah.edu/~vcsharma/pubs/dpdns2016-shrg.pdf)
+When you use VULFI in your research work, please cite our work using below citation information. The paper could be found [here.](http://www.cs.utah.edu/~vcsharma/pubs/dpdns2016-shrg.pdf)
 
 ```
 @inproceedings{dpdns16vulfi,
@@ -27,7 +27,7 @@ When you use VULFI in your research work, please cite our work using below citat
 }
 ```
 ## Code documentation
-The latest doxygen code documentation of VULFI can be found [here.](http://formalverification.cs.utah.edu/fmr/vulfi/html/)
+The latest doxygen code documentation of VULFI could be found [here.](http://formalverification.cs.utah.edu/fmr/vulfi/html/)
 
 ## LLVM Resources
 If you are new to LLVM, you may find below resources useful:
@@ -48,9 +48,9 @@ mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.goo
 ## Getting Started with VULFI
 ### Software Dependencies
 * LLVM (version >= 3.2)
-* CMake (version > 3.0) 
-* Python (version > 2.7)
-* Doxygen (version > 1.8.9)
+* CMake (version >= 3.0) 
+* Python (version >= 2.7)
+* Doxygen (version >= 1.8.9)
 * Graphviz (default version)
 
 ### System Configuration
@@ -61,16 +61,15 @@ Below is the system configuration used for testing all versions of VULFI.
 
 ### License & Copyright Information
 ### Installation
-
 ##### Step 1: Download VULFI. 
+
 ```
 git clone https://github.com/utahfmr/vulfi.github.io.git <vulfi dir>
 ```
 where \<vulfi dir\> is the directory where you want vulfi source code to live.
 
 ##### Step 2: Choose the correct version of VULFI. 
-
-If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" represeting your LLVM version.
+If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" representing your LLVM version.
 
 ```
 cd <vulfi dir>/master
@@ -96,13 +95,13 @@ Now, running make command should build VULFI library with the name LLVMVulfi.so.
 make
 ```
 
-After building VULFI, you could install vulfi by running below command. Please note that the default installation directory for VULFI is ${CMAKE_INSTALL_PREFIX}/lib. On linux systems, CMAKE_INSTALL_PREFIX points to /usr/local. 
+After building VULFI, you could install VULFI by running below command. Please note that the default installation directory for VULFI is ${CMAKE_INSTALL_PREFIX}/lib. On Linux systems, CMAKE_INSTALL_PREFIX points to /usr/local. 
 
 ```
 sudo make install
 ```
 
-To change the default installation directory of VULFI, you can use [DESTDIR](https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html). An example commandline given below.
+To change the default installation directory of VULFI, you can use [DESTDIR](https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html). An example command-line given below.
 
 ```
 sudo make install DESTDIR=<my dir>
@@ -129,7 +128,7 @@ Before reading the below documentation, please ensure that you have already exec
 
 First, locate the code file which has the main() function. 
 
-If your target program is a C program then add below code snippet at the begining of the code file.
+If your target program is a C program then add below code snippet at the beginning of the code file.
 
 ```
 #ifdef INST
@@ -138,7 +137,7 @@ extern int printFaultInjectionData(void);
 #endif
 ```
 
-If your target program is a C++ program then add below code snippet at the begining of the code file.
+If your target program is a C++ program then add below code snippet at the beginning of the code file.
 
 
 ```
@@ -192,8 +191,8 @@ Now, in the main() function, add below code snippet before all the return calls.
         Default Value: x86
         
 -dbf  : Debug file name with csv extension
-        Description: this CSV file provides the list of static LLVM-IR instructions 
-        that will be targeted for fault injection.
+        Description: this CSV file provides the list of static 
+        LLVM-IR instructions that will be targeted for fault injection.
 ```
 
 ##### Step 2: Instrumentation.
@@ -211,7 +210,7 @@ clang++ <vulfi dir>/master/runtime/Corrupt.C -emit-llvm -c -o Corrupt.bc
 
 ```
 clang++ foo.cp -emit-llvm -c -o foo.bc
-clang++ foo_inst.cp -emit-llvm -c -o foo_inst.bc 
+clang++ foo_inst.cp -DINST -emit-llvm -c -o foo_inst.bc 
 ```
 
 * We should now link both the bitcode files as shown below.
@@ -234,12 +233,12 @@ clang++ foo.bc -o foo
 clang++ foo_instrument.bc -o foo_instrument
 ```
 
-The binary foo would executed the unmodified version of foo.cpp whereas the binary foo_instrument would excute the instrumented version of foo.cpp which would perform runtime fault injection.
+The binary foo would execute the unmodified version of foo.cpp whereas the binary foo_instrument would execute the instrumented version of foo.cpp which would perform runtime fault injection.
 
 **Please note that the instrumented version of the binary (in this case: foo_instrument) MUST NOT be executed from the terminal else you would get "segmentation fault" error. The instrumented binary expects certain configuration files which are automatically generated by a python script provided with the VULFI release. Therefore, the instrumented binary must always be executed using the python script as explained in the next step.**
 
 ##### Step 3: Execution.
-VULFI automates the fault injection processs mainly consisting of execution and result generation, using a python script that can be located at <vulfi dir>/master/scripts/driver.py. The python script provdes two modes of operation: "standalone" and "comparison" modes. In standalone mode, only instrumented binary is needed (foo\_instrument) for execution. In comparison mode, we require both uninstrumented and instrumented binaries (foo and foo_instrument) for execution. At the end of the execution, result produced by both the binaries are compared to report a potential silent data corruption. A detailed information (e.g., position of the flipped bit, targeted instruction, runtime value which is corrupted, etc.) about the fault injection is written to a CSV file. In case of multiple runs, the results from each execution is appended to the same CSV file. The commandline information of python script could be printed by running below command.
+VULFI automates the fault injection process mainly consisting of **execution** and **result generation** phases, using a python script that can be located at <vulfi dir>/master/scripts/driver.py. The python script provides two modes of operation: **standalone** and **comparison** modes. In standalone mode, only instrumented binary is needed (foo\_instrument) for execution. In comparison mode, we require both uninstrumented and instrumented binaries (foo and foo\_instrument) for execution. At the end of the execution, result produced by both the binaries are compared to report a potential occurrence of silent data corruption. A detailed information (e.g., position of the flipped bit, targeted instruction, runtime value which is corrupted, etc.) about the fault injection is written to a CSV file. In case of multiple runs, the results from each run is appended to the same CSV file. The command-line information of python script could be printed by running below command.
 
 ```
 python <vulfi dir>/main/driver.py --help
@@ -248,7 +247,6 @@ python <vulfi dir>/main/driver.py --help
 Command output:
 
 ```
-python driver.py --help
 usage: driver.py [-h] [-e] [-s] [-c] [--ov] [--pv] [--iter EXEC_COUNT]
                  [--fcp {bex,img,num}] [--th TH] [--exec1 EXEC1] [--cmd1 CMD1]
                  [--out1 OUT1] [--cho] [--cfs] [--exec2 EXEC2] [--cmd2 CMD2]
