@@ -60,6 +60,8 @@ Below is the system configuration used for testing all versions of VULFI.
 * Memory : 16GB
 
 ### License & Copyright Information
+Please refer to **LICENSE** document located in the top level directory of VULFI.
+
 ### Installation
 ##### Step 1: Download VULFI. 
 
