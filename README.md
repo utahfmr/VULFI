@@ -48,6 +48,12 @@ mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.goo
 ## Getting Started with VULFI
 ### Dependencies
 ### Test Configuration
+Below is the configuration used for testing all versions of VULFI.
+* CPU : Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz
+* OS : Ubuntu 15.10 (64-bit)
+* Memory : 16GB
+
+
 ### Supported Languages
 ### License & Copyright Information
 ### Installation
