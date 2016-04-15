@@ -23,9 +23,11 @@ The latest doxygen code documentation of VULFI can be found [here.](http://forma
 ## LLVM Resources
 If you are new to LLVM, you may find below resources useful:
 * [Getting started with LLVM ](http://llvm.org/docs/GettingStarted.html)
-* [Building LLVM with CMake](http://llvm.org/docs/CMake.html)
-* [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
 * [Writing an LLVM Pass](http://llvm.org/docs/WritingAnLLVMPass.html)
 * [LLVM Programmer's Manual](http://llvm.org/docs/ProgrammersManual.html)
 * [LLVM Language Reference](http://llvm.org/docs/LangRef.html)
 * [Adrian Sampson's Blog on LLVM](http://adriansampson.net/blog/llvm.html)
+* [Building LLVM with CMake](http://llvm.org/docs/CMake.html)
+* [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
+
+
