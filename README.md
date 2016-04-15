@@ -31,4 +31,7 @@ If you are new to LLVM, you may find below resources useful:
 * [LLVM CMake Variables](http://llvm.org/docs/CMake.html#options-and-variables)
 * [LLVM’s Analysis and Transform Passes](http://llvm.org/docs/Passes.html)
 
+## Contact Us
+If you have feedback or would like to report an issue, please join our [mailing list](
+vulfi-dev@googlegroups.com).
 
