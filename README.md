@@ -90,7 +90,7 @@ First, run cake to generate build scripts. If everything works fine then cmake s
 cmake <vulfi dir>/master
 ```
 
-Now, running make command should build VULFI successfully.
+Now, running make command should build VULFI library with the name LLVMVulfi.so.
 
 ```
 make
