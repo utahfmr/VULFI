@@ -17,8 +17,5 @@ When you use VULFI in your research work, please cite our work using below citat
   year = {2016},
 }
 ```
-
-
-
-
 ## Code documentation
+The latest doxygen code documentation of VULFI can be found [here.](http://formalverification.cs.utah.edu/fmr/vulfi/html/)
