@@ -158,8 +158,48 @@ Now, in the main() function, add below code snippet before all the return calls.
 ```
 
 
+##### Command line options supported by VULFI
+
+```
+-fn  : Name(s) of the function(s) to be targeted
+       Example: -fn "func1 func2 func3"
+
+-fsa : Fault Site Selection Algorithm
+       Options: 
+        data: target all fault sites which only affect data instructions 
+        (and don't affect control or address)
+        dint: target all "data" fault sites of integer type (bitwdith >=2)
+        dflo: target all "data" fault sites of floating-point type (both 
+        single and double precision)
+        ctrl: target all fault sites which affect control instructions.
+        addr: target all fault sites which affect address instructions.
+       Example: -fsa "data"
+       Default Value: data
+       
+
+-lang : Target language
+        Options: C/C++/ISPC/OCL
+        Description: This information is used by VULFI to implement language 
+        specific features.
+        Example: -lang "C++"
+        Default Value: C++
+
+-arch : Target architecture
+        Options: x86/neon/nvvm/mips/spu
+        Description: This information is used by VULFI to implement arch
+        specific features. Currently, "x86" is the only supported one.
+        Example: -arch "x86"
+        Default Value: x86
+        
+-dbf  : Debug file name with csv extension
+        Description: this CSV file provides the list of static LLVM-IR instructions 
+        that will be targeted for fault injection.
+```
+
 ##### Step 2: Instrumentation.
-##### Step 2: Execution.
+At this point, we are ready to perform fault instrumentation using VULFI library. 
+
+##### Step 3: Execution.
 
 ```
 python driver.py --help
