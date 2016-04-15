@@ -54,15 +54,26 @@ mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.goo
 * Graphviz (default version)
 
 ### System Configuration
-Below is the system configuration used for testing all versions of VULFI.
+Below is the system configuration used for testing all versions of VULFI.
 * CPU : Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz
 * OS : Ubuntu 15.10 (64-bit)
 * Memory : 16GB
 
-
-### Supported Languages
 ### License & Copyright Information
 ### Installation
+
+##### Step 1: Download VULFI. 
+```
+git clone https://github.com/utahfmr/vulfi.github.io.git <vulfi dir>
+```
+where \<vulfi dir\> is the directory where you want vulfi source code to live.
+
+##### Step 2: Choose the correct version of VULFI. If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" represeting your LLVM version.
+
+```
+cd <vulfi dir>/master
+```
+
 ### Running Examples
 ### Steps for using VULFI for Fault Injection
 
