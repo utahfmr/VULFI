@@ -33,5 +33,5 @@ If you are new to LLVM, you may find below resources useful:
 
 ## Contact Us
 If you have feedback or would like to report an issue, please join our [mailing list](
-vulfi-dev@googlegroups.com).
+mailto:vulfi-dev@googlegroups.com).
 
