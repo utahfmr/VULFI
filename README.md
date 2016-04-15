@@ -110,14 +110,14 @@ sudo make install DESTDIR=<my dir>
 
 ##### Step 4: Run examples.
 
-VULFI has some sample examples written in C and C++ which can be located at <vulfi dir>/master/examples. You can look at the "common.mk" files inside "src" and "run" to understand how VULFI can be used for fault injection. You can compile and run all examples in one go by running below commands.
+VULFI has some sample examples written in C and C++ which can be located at <vulfi dir>/master/examples. You can look at the "common.mk" files inside "src" and "run" subdirectories to understand how VULFI can be used for fault injection. You can compile and run all examples in one go by running below commands.
 
 ```
 cd <vulfi dir>/master/examples
 make VULFI_SRC_DIR=<vulfi dir>/master VULFI_INSTALL_DIR=/usr/local/lib
 ```
 
-Note that the variables VULFI_SRC_DIR and VULFI_INSTALL_DIR must be assigned absolute paths where VULFI src code lives and where VULFI is installed respectively.
+Note that the variables VULFI_SRC_DIR and VULFI_INSTALL_DIR must be assigned absolute paths representing where VULFI source code lives and where VULFI library (LLVMVulfi.so) is installed respectively.
 
 
 
