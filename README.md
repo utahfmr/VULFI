@@ -46,9 +46,15 @@ mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.goo
 
 
 ## Getting Started with VULFI
-### Dependencies
-### Test Configuration
-Below is the configuration used for testing all versions of VULFI.
+### Software Dependencies
+* LLVM (version >= 3.2)
+* CMake (version > 3.0) 
+* Python (version > 2.7)
+* Doxygen (version > 1.8.9)
+* Graphviz (default version)
+
+### System Configuration
+Below is the system configuration used for testing all versions of VULFI.
 * CPU : Intel(R) Core(TM) i7-4770 CPU @ 3.40GHz
 * OS : Ubuntu 15.10 (64-bit)
 * Memory : 16GB
