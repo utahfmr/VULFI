@@ -44,3 +44,16 @@ If you are new to LLVM, you may find below resources useful:
 If you have feedback or would like to report an issue, please [email us](
 mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.google.com/forum/#!forum/vulfi-dev).
 
+
+## Getting Started with VULFI
+### Dependencies
+### Test Configuration
+### Supported Languages
+### License & Copyright Information
+### Installation
+### Running Examples
+### Steps for using VULFI for Fault Injection
+
+
+Recent versions of LLVM have moved to CMake
+
