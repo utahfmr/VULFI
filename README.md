@@ -68,10 +68,44 @@ git clone https://github.com/utahfmr/vulfi.github.io.git <vulfi dir>
 ```
 where \<vulfi dir\> is the directory where you want vulfi source code to live.
 
-##### Step 2: Choose the correct version of VULFI. If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" represeting your LLVM version.
+##### Step 2: Choose the correct version of VULFI. 
+
+If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" represeting your LLVM version.
 
 ```
 cd <vulfi dir>/master
+```
+
+##### Step 3: Create the build directory.
+
+```
+mkdir build
+cd build
+```
+
+##### Step 4: Build & Install VULFI.
+
+First, run cake to generate build scripts. If everything works fine then cmake should finish without errors.
+```
+cmake <vulfi dir>/master
+```
+
+Now, running make command should build VULFI successfully.
+
+```
+make
+```
+
+After building VULFI, you could install vulfi by running below command. Please note that the default installation directory for VULFI is ${CMAKE_INSTALL_PREFIX}/lib. On linux systems, CMAKE_INSTALL_PREFIX points to /usr/local. 
+
+```
+sudo make install
+```
+
+To change the default installation directory of VULFI, you can use [DESTDIR](https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html). An example commandline given below.
+
+```
+sudo make install DESTDIR=<my dir>
 ```
 
 ### Running Examples
