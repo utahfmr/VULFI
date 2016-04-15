@@ -197,7 +197,35 @@ Now, in the main() function, add below code snippet before all the return calls.
 ```
 
 ##### Step 2: Instrumentation.
-At this point, we are ready to perform fault instrumentation using VULFI library. 
+Suppose, we have a code file foo.cpp containing functions foo1(), foo2(), and main(), that we want to target for fault injection. 
+
+* As a first step, we need to manually add the code snippets described in Step 1. 
+
+* Next, compile Corrupt.C (inside the runtime folder of VULFI) to LLVM bitcode as shown below.
+
+```
+clang++ <vulfi dir>/master/runtime/Corrupt.C -emit-llvm -c -o Corrupt.bc
+```
+
+* Now, compile foo.cpp as shown below.
+
+```
+clang++ foo.cp -emit-llvm -c -o foo.bc 
+```
+
+* We should now link both the bitcode files as shown below.
+
+```
+llvm-link Corrupt.bc foo.bc -o foo_corrupt.bc
+```
+
+* Finally, instrument the bitcode foo_corrupt.bc using VULFI. For example, if we can to target all "data" fault sites in functions foo1() and foo2() in foo.cpp code file, we should run below command.
+ ```
+opt -load /usr/local/lib/LLVMVulfi.so -vulfi -fn "foo1 foo2" -fsa "data" -lang "C++" -arch "x86" \
+-dbgf "fault_sites_data_foo.csv" < foo_corrupt.bc > foo_instrument.bc
+
+```
+
 
 ##### Step 3: Execution.
 
