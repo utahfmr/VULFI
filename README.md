@@ -32,6 +32,6 @@ If you are new to LLVM, you may find below resources useful:
 * [LLVM’s Analysis and Transform Passes](http://llvm.org/docs/Passes.html)
 
 ## Contact Us
-If you have feedback or would like to report an issue, please join our [mailing list](
-mailto:vulfi-dev@googlegroups.com).
+If you have feedback or would like to report an issue, please [email us](
+mailto:vulfi-dev@googlegroups.com) or join our [mailing list](https://groups.google.com/forum/#!forum/vulfi-dev).
 
