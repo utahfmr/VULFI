@@ -13,6 +13,10 @@ void CLData::setFSAlgo(string algo){
     this->fsalg=Common::FS_DFLO;
   } else if(algo.compare("addr") == 0){
     this->fsalg=Common::FS_ADDR;
+  }else if(algo.compare("addg") == 0){
+	this->fsalg=Common::FS_ADDG;
+  }else if(algo.compare("addi") == 0){
+	this->fsalg=Common::FS_ADDI;
   } else if(algo.compare("ctrl") == 0){
     this->fsalg=Common::FS_CTRL;
   } else if(algo.compare("vctl") == 0){

@@ -29,8 +29,6 @@ Dispatcher::Dispatcher(Module *M, CLData *Cl){
  * */
 void Dispatcher::populateFaultSites(Module *M, CLData *Cl){
   Common::FSAlgo fsalgo = Cl->getFSAlgo();
-  errs() << "\n==================================================";
-  errs() << "\nEnumerating fault sites..";
   if((fsalgo == Common::FS_DATA ||
       fsalgo == Common::FS_DINT ||
       fsalgo == Common::FS_DFLO ) &&
@@ -38,8 +36,7 @@ void Dispatcher::populateFaultSites(Module *M, CLData *Cl){
     DataSites ds;
     set<Instruction*> templist = ds.getfaultSites(M,Cl,this->Fl);
     datafaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of pure-data fault sites enumerated: "
-	   << datafaultSites.size() << "\n";
+    Common::printFSInfo("pure-data",datafaultSites.size());
   } else if((fsalgo == Common::FS_DATA ||
 	     fsalgo == Common::FS_DINT ||
 	     fsalgo == Common::FS_DFLO ) &&
@@ -47,52 +44,56 @@ void Dispatcher::populateFaultSites(Module *M, CLData *Cl){
     DataSitesRange dsr;
     set<Instruction*> templist = dsr.getfaultSites(M,Cl,this->Fl);
     datafaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of pure-data fault sites enumerated in the "
-	   << "user provided range: "
-	   << datafaultSites.size() << "\n";
+    Common::printFSInfo("pure-data",datafaultSites.size());
   } else if(fsalgo == Common::FS_CTRL &&
 	    !Cl->getRangeFlag()){
     CtrlSites ctrls;
     set<Instruction*> templist = ctrls.getfaultSites(M,Cl,this->Fl);
     ctrlfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of control fault sites enumerated: "
-	   << ctrlfaultSites.size() << "\n";
+    Common::printFSInfo("control",ctrlfaultSites.size());
   } else if(fsalgo == Common::FS_VCTL &&
 	    !Cl->getRangeFlag()){
     CtrlSites vctrls;
     set<Instruction*> templist = vctrls.getfaultSites(M,Cl,this->Fl);
     vctrlfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of vector control fault sites enumerated: "
-	   << vctrlfaultSites.size() << "\n";
+    Common::printFSInfo("vector control",vctrlfaultSites.size());
   } else if(fsalgo == Common::FS_CTRL &&
 	    Cl->getRangeFlag()){
     CtrlSitesRange ctrlsr;
     set<Instruction*> templist = ctrlsr.getfaultSites(M,Cl,this->Fl);
     ctrlfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of control fault sites enumerated in the "
-	   << "user provided range: "
-	   << ctrlfaultSites.size() << "\n";
-  } else if((fsalgo == Common::FS_ADDR) &&
+    Common::printFSInfo("control",ctrlfaultSites.size());
+  } else if((fsalgo == Common::FS_ADDR ||
+		     fsalgo == Common::FS_ADDG ||
+			 fsalgo == Common::FS_ADDI) &&
 	    !Cl->getRangeFlag()){
     AddrSites addrs;
     set<Instruction*> templist = addrs.getfaultSites(M,Cl,this->Fl);
     addrfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of address fault sites enumerated: "
-	   << addrfaultSites.size() << "\n";
-  } else if((fsalgo == Common::FS_ADDR) &&
+    if(fsalgo == Common::FS_ADDR)
+    	Common::printFSInfo("address",addrfaultSites.size());
+    if(fsalgo == Common::FS_ADDG)
+        Common::printFSInfo("address-gep",addrfaultSites.size());
+    if(fsalgo == Common::FS_ADDI)
+        Common::printFSInfo("address-idx",addrfaultSites.size());
+  } else if((fsalgo == Common::FS_ADDR ||
+		  	 fsalgo == Common::FS_ADDG ||
+			 fsalgo == Common::FS_ADDI) &&
 	    Cl->getRangeFlag()){
     AddrSitesRange addrsr;
     set<Instruction*> templist = addrsr.getfaultSites(M,Cl,this->Fl);
     addrfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of pure-data fault sites enumerated in the "
-	   << "user provided range: "
-	   << addrfaultSites.size() << "\n";
+    if(fsalgo == Common::FS_ADDR)
+    	Common::printFSInfo("address",addrfaultSites.size());
+    if(fsalgo == Common::FS_ADDG)
+        Common::printFSInfo("address-gep",addrfaultSites.size());
+    if(fsalgo == Common::FS_ADDI)
+        Common::printFSInfo("address-idx",addrfaultSites.size());
   } else if((fsalgo == Common::FS_MASK)){
     MaskSites masks;
     set<Instruction*> templist = masks.getfaultSites(M,Cl,this->Fl);
     maskfaultSites.insert(templist.begin(),templist.end());
-    errs() << "\nTotal no. of mask fault sites enumerated: "
-	   << maskfaultSites.size() << "\n";
+    Common::printFSInfo("mask",maskfaultSites.size());
   }
   
   return;

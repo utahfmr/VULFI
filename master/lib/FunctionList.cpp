@@ -41,7 +41,6 @@ void FunctionList::fillTargetFnList(Module *M, CLData *Cl){
     #ifdef DEBUG
     errs() << "\nFunction name: " << fnName;
     #endif
-    errs() << fnName << " ";
     if(fnName.compare(fnMain)==0){ // main() function is never mangled
       this->fiFnMain = &*it;
     }

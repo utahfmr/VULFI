@@ -94,6 +94,8 @@ class Common{
     FS_DINT, // Integer data sites
     FS_DFLO, // Floating-point data sites
     FS_ADDR, // Address sites
+	FS_ADDG, // Address sites
+	FS_ADDI, // Address sites
     FS_CTRL, // Scalar control-flow sites
     FS_VCTL, // Vector control-flow sites
     FS_MASK, // instruction involving mask instructions
@@ -133,6 +135,7 @@ class Common{
   };
 
   set<string> blacklistSet;
+  static void printFSInfo(string fsname, int fscount);
   static set<string> splitAtSpace(string spltStr);
   static vector<string> splitAtSequence(string targetstr,
 					set<char> sequence);

@@ -295,12 +295,14 @@ inline void checkParams(void){
 
 // print fault injection params
 inline void printParams(void){
+  #ifdef DEBUG
   printf("\nFault injection algorithm: %d",fialg);
   printf("\nByte range: %d",fibr);
   printf("\nByte direction: %d",fid);
   printf("\nProbability: %lld/%lld",ef,tf);
   printf("\nBit range (only applicable for fi algo ABR): [%d-%d]",bl,bu);
   printf("\nPrint Fault Site Status Flag: %d\n",pfs);
+  #endif
 }
 
 // key function which reads fi params from fi.in and init global vars
@@ -617,6 +619,7 @@ int printFaultSitesData(void){
     free(dynFSIdx);
     dynFSIdx=NULL;
   }
+#ifdef DEBUG
   printf("\n----------------Fault Site Statistics------------------");
   printf("\nTotal # of fault sites enumerated : %lld",faultSites);
   printf("\nFurther sub-categorization of fault sites below:");
@@ -630,6 +633,7 @@ int printFaultSitesData(void){
   printf("\nThe chosen MPI process is : %d",targetRank);
 #endif
   printf("\n------------------------------------------------------------\n");
+#endif
   return 0;
 }
 
@@ -665,6 +669,8 @@ int printFaultInjectionData(void){
     free(dynFSIdx);
     dynFSIdx=NULL;
   }
+
+#ifdef DEBUG
   printf("\n----------------Fault Injection Statistics------------------");
   printf("\nTotal # of fault injection done : %lld",totalFiCount);
   printf("\nFurther sub-categorization of fault sites below:");
@@ -679,6 +685,7 @@ int printFaultInjectionData(void){
   printf("\nThe chosen MPI process is : %d",targetRank);
 #endif
   printf("\n------------------------------------------------------------\n");
+#endif
   return 0;
 }
 

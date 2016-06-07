@@ -31,6 +31,13 @@ set<string> Common::splitAtSpace(string spltStr){
   return splitList;
 }
 
+void Common::printFSInfo(string fsname, int fscount){
+	errs() << "\n\n==================================================";
+	errs() << "\nINFO: Total no. of " << fsname
+			<< " fault sites found: " << fscount << "\n";
+	errs() << "==================================================\n\n";
+}
+
 vector<string> Common::splitAtSequence(string targetstr,
 				       set<char> sequence){
 

@@ -119,7 +119,7 @@ Instruction* FaultInjector::prepareInstrForFaultInjection(Module *M, CLData* Cl,
   // arg#2 - name of the instruction
   string instrString;
   llvm::raw_string_ostream rso(instrString);
-  instr->print(rso);
+  instrClone->print(rso);
   Constant *instrName = ConstantDataArray::getString(getGlobalContext(),instrString,true);
   GlobalVariable *instrNameGlobal = new GlobalVariable(*M,instrName->getType(),true,
 						       GlobalValue::InternalLinkage,instrName,"instrname");
