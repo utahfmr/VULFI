@@ -78,37 +78,37 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
       //Skip PHI Nodes
       if(isa<PHINode>(currentInstr)    ||
          isa<AllocaInst>(currentInstr) ||
-	     isa<LandingPadInst>(currentInstr)){
-    	  continue;
+	 isa<LandingPadInst>(currentInstr)){
+	continue;
       }
 
-	  Type* ty = currentInstr->getType();
-	  Type::TypeID tyID = ty->getTypeID();
-	  if(tyID == Type::VectorTyID){
-		  Type* ety = currentInstr->getType()->getVectorElementType();
-		  if(!ety->isPointerTy()){
-			  continue;
-		  }
-	  } else if(!ty->isPointerTy()) {
-		  continue;
-	  }
+      Type* ty = currentInstr->getType();
+      Type::TypeID tyID = ty->getTypeID();
+      if(tyID == Type::VectorTyID){
+	Type* ety = currentInstr->getType()->getVectorElementType();
+	if(!ety->isPointerTy()){
+	  continue;
+	}
+      } else if(!ty->isPointerTy()) {
+	continue;
+      }
 
       if((fsalg==Common::FS_ADDG || fsalg==Common::FS_ADDI) &&
          !isa<GetElementPtrInst>(currentInstr))
-    	  continue;
+	continue;
 
       // Build initial list of fault sites
       if(instrList.find(currentInstr)==instrList.end())
-    	  instrList.insert(currentInstr);
+	instrList.insert(currentInstr);
 
       // Update instruction to function hash table
       this->instrToFuncTable.insert(pair<Instruction*, Function*>(currentInstr,fnList[i]));
 
-      #ifdef DEBUG
+#ifdef DEBUG
       // Print to screen initial target instructions
       errs() << "\nInstruction: "<< *currentInstr;
       errs() << "\nTypeID: "<< currentInstr->getType()->getTypeID();
-      #endif
+#endif
       
     }
   }
@@ -129,30 +129,56 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
       	   isa<LandingPadInst>(bckInstr)){
       	  continue;
       	} else if(bcksliceInstrList.find(bckInstr)==bcksliceInstrList.end()){
-      		bcksliceInstrList.insert(bckInstr);
+	  Type* ty = bckInstr->getType();
+	  if(ty->isIntegerTy(16) ||
+	     ty->isIntegerTy(32) ||
+	     ty->isIntegerTy(64) ||
+	     ty->isFloatTy()     ||
+	     ty->isDoubleTy()){
+	    bcksliceInstrList.insert(bckInstr);
+	  } else if(ty->isVectorTy()){
+	    Type* ety = ty->getVectorElementType();
+	    if(ety->isIntegerTy(16) ||
+	       ety->isIntegerTy(32) ||
+	       ety->isIntegerTy(64) ||
+	       ety->isFloatTy()     ||
+	       ety->isDoubleTy()){
+	      bcksliceInstrList.insert(bckInstr);
+	    }
+	  }	  
       	}
       }
       
-      // print info for each instruction
-      if(fsalg==Common::FS_ADDI)
-    	  this->writeDbgData(currentInstr,Cl,"addi");
-      else if(fsalg==Common::FS_ADDG)
-    	  this->writeDbgData(currentInstr,Cl,"addg");
-      else if(fsalg==Common::FS_ADDR)
-    	  this->writeDbgData(currentInstr,Cl,"addr");
+  
     }
   }
 
-  if(fsalg==Common::FS_ADDI) return bcksliceInstrList;
-  else if(fsalg==Common::FS_ADDG) return instrList;
-  else if(fsalg==Common::FS_ADDR){
-	  for(set<Instruction*>::iterator si = bcksliceInstrList.begin();si!=bcksliceInstrList.end();++si){
-		  Instruction* bcksliceInstr=*si;
-		  if(instrList.find(bcksliceInstr)==instrList.end()){
-			  instrList.insert(bcksliceInstr);
-		  }
-	  }
+  if(fsalg==Common::FS_ADDR){
+    for(set<Instruction*>::iterator si=bcksliceInstrList.begin();
+	si!=bcksliceInstrList.end();++si){
+      Instruction* bcksliceInstr=*si;
+      if(instrList.find(bcksliceInstr)==instrList.end()){	
+	instrList.insert(bcksliceInstr);
+      }
+    }
   }
-  return instrList;
+
+  set<Instruction*> resultlst;  
+  if(fsalg==Common::FS_ADDI) resultlst=bcksliceInstrList;
+  else resultlst=instrList;
+
+  for(set<Instruction*>::iterator si=resultlst.begin();
+      si!=resultlst.end();++si){
+    Instruction* instr=*si;    
+    // print info for each instruction
+    if(fsalg==Common::FS_ADDI)
+      this->writeDbgData(instr,Cl,"addi");
+    else if(fsalg==Common::FS_ADDG)
+      this->writeDbgData(instr,Cl,"addg");
+    else if(fsalg==Common::FS_ADDR)
+      this->writeDbgData(instr,Cl,"addr");
+  }
+  
+  return resultlst;
 }
 
