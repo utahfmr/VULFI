@@ -1,5 +1,9 @@
 #include "Corrupt.h"
 
+//~ #ifndef DEBUG
+//~ #define DEBUG
+//~ #endif
+
 #ifdef MPI_ENABLED
 #include "mpi.h"
 int targetRank=-1;

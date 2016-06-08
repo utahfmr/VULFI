@@ -118,7 +118,9 @@ void Dispatcher::runFaultInjector(Module *M, CLData *Cl){
       CtrlFaults cf;
       cf.injectFaults(M,vctrlfaultSites,Cl,this->Fl);
     }
-  } else if(fsalgo == Common::FS_ADDR){
+  } else if(fsalgo == Common::FS_ADDR ||
+	    fsalgo == Common::FS_ADDG ||
+	    fsalgo == Common::FS_ADDI){
     if(!addrfaultSites.empty()){
       AddrFaults af;
       af.injectFaults(M,addrfaultSites,Cl,this->Fl);
