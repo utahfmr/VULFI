@@ -20,7 +20,7 @@ Please refer to the **LICENSE** document located in the top level directory of V
 ##### Step 1: Download VULFI. 
 
 ```
-git clone https://github.com/utahfmr/vulfi.github.io.git <vulfi dir>
+git clone https://github.com/utahfmr/VULFI.git <vulfi dir>
 ```
 where \<vulfi dir\> is the directory where you want vulfi source code to live.
 
