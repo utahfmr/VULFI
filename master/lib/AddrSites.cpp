@@ -69,7 +69,8 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
   // Get list of target functions
   vector<Function*> fnList = Fl->getTargetFnList();
   enum Common::FSAlgo fsalg=Cl->getFSAlgo();
-  
+  set<Instruction*> restlst;
+  unsigned instcount=0;
   // Iterative over instructions of the target functions
   for(unsigned i=0;i<fnList.size();i++){
     for(inst_iterator it=inst_begin(fnList[i]),itEnd=inst_end(fnList[i]);
@@ -87,15 +88,19 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
       if(tyID == Type::VectorTyID){
 	Type* ety = currentInstr->getType()->getVectorElementType();
 	if(!ety->isPointerTy()){
+	  restlst.insert(currentInstr);
 	  continue;
 	}
       } else if(!ty->isPointerTy()) {
+	restlst.insert(currentInstr);
 	continue;
       }
 
       if((fsalg==Common::FS_ADDG || fsalg==Common::FS_ADDI) &&
-         !isa<GetElementPtrInst>(currentInstr))
+         !isa<GetElementPtrInst>(currentInstr)){
+	restlst.insert(currentInstr);
 	continue;
+      }
 
       // Build initial list of fault sites
       if(instrList.find(currentInstr)==instrList.end())
@@ -147,9 +152,7 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
 	    }
 	  }	  
       	}
-      }
-      
-  
+      }     
     }
   }
 
@@ -178,7 +181,44 @@ set<Instruction*> AddrSites::getfaultSites(Module *M, CLData *Cl, FunctionList *
     else if(fsalg==Common::FS_ADDR)
       this->writeDbgData(instr,Cl,"addr");
   }
-  
+
+  for(set<Instruction*>::iterator si = restlst.begin();
+      si!=restlst.end();++si){
+    Instruction* currentInstr=*si;
+    if(resultlst.find(currentInstr)!=resultlst.end())
+      continue;
+    Type::TypeID tyID = currentInstr->getType()->getTypeID();
+    Type* ty=currentInstr->getType();      
+    if(bcksliceInstrList.find(currentInstr)==
+       bcksliceInstrList.end()){
+      if(ty->isIntegerTy(16) ||
+  	 ty->isIntegerTy(32) ||
+  	 ty->isIntegerTy(64) ||
+  	 tyID==Type::FloatTyID   ||
+  	 tyID==Type::DoubleTyID){
+  	if(isa<BinaryOperator>(currentInstr))
+  	  instcount++;
+      } else if(tyID==Type::VectorTyID){
+  	Type* ety=ty->getVectorElementType();
+  	Type::TypeID etyID = ety->getTypeID();
+  	if(ety->isIntegerTy(16) ||
+  	   ety->isIntegerTy(32) ||
+  	   ety->isIntegerTy(64) ||
+  	   etyID==Type::FloatTyID   ||
+  	   etyID==Type::DoubleTyID){
+  	  if(isa<BinaryOperator>(currentInstr))
+  	    instcount++;
+  	}
+      } else if(isa<StoreInst>(currentInstr)){
+  	instcount++;
+      }
+    }    
+  }  
+
+  errs() << "\n\n\n\n===================================";
+  errs() << "\nRest over instruction count is: " 
+	 << instcount;
+  errs() << "\n===================================\n\n\n";
   return resultlst;
 }
 
