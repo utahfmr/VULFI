@@ -1,5 +1,6 @@
 
-## Getting Started with VULFI
+
+## Getting Started with VULFI -- version 1.0
 ### Software Dependencies
 * LLVM (version >= 3.2)
 * CMake (version >= 3.0) 
