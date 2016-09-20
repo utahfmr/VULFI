@@ -273,8 +273,6 @@ inline FILE* getFD(const char* fname, const char* mode){
 // splits a string based on a delimiter and provides an element by index
 inline char* getStrFieldByIndex(char* currentStr, const char* delim, int idx){
   static char temp[1024];
-  //char temp[1024];
-  //char* temp = (char*)malloc(1024*sizeof(char)) ;
   char* result;
   int i=-1;
   strcpy(temp,currentStr);
