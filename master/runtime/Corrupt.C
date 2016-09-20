@@ -314,7 +314,6 @@ inline void printParams(void){
 // key function which reads fi params from fi.in and init global vars
 inline void processParams(const char* name, const char* value){
   if(!strcmp(name,"fia")){
-    printf("FIA = %s\n", name);
     if(!strcmp(value,"CBR")){
       fialg = FI_CBR;
     } else if(!strcmp(value,"ABR")){
