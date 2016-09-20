@@ -7,6 +7,10 @@
 using namespace llvm;
 using namespace std;
 
+
+extern "C" LLVMContextRef LLVMGetGlobalContext(void) ;
+
+
 Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionList* Fl, Instruction* instr, Common::VectorFSType vftype, int idxLimit){
   // Clone the target instruction. This is required because when
   // replaceAllUses() is applied on the target instruction \var instr,
@@ -17,10 +21,12 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
   string instrString;
   llvm::raw_string_ostream rso(instrString);
   instr->print(rso);
-  Constant *instrName = ConstantDataArray::getString(getGlobalContext(),instrString,true);
+  //Constant *instrName = ConstantDataArray::getString(*unwrap(LLVMGetGlobalContext()),instrString,true);
+  Constant *instrName = ConstantDataArray::getString(instr->getType()->getContext(),instrString,true);
   GlobalVariable *instrNameGlobal = new GlobalVariable(*M,instrName->getType(),true,
 						       GlobalValue::InternalLinkage,instrName,"instrname");
-  Constant *nullvalue = Constant::getNullValue(IntegerType::getInt32Ty(getGlobalContext()));
+  //Constant *nullvalue = Constant::getNullValue(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())));
+  Constant *nullvalue = Constant::getNullValue(IntegerType::getInt32Ty(instr->getType()->getContext()));
   vector<Constant*> gepParams;
   gepParams.push_back(nullvalue);
   gepParams.push_back(nullvalue);
@@ -30,13 +36,16 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
 
   // arg# 3
   if(vftype == Common::FST_EXIDX || vftype == Common::FST_INSIDX){
-    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),idxLimit,false);
+    //Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),idxLimit,false);
+    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),idxLimit,false);
     arglist.push_back(arg3);
   } else if(vftype == Common::FST_SHUFIDX){
-    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),idxLimit,false);
+    //Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),idxLimit,false);
+    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),idxLimit,false);
     arglist.push_back(arg3);
   } else {
-    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),0,false);
+    //Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),0,false);
+    Value* arg3 = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),0,false);
     arglist.push_back(arg3);
   }
 
@@ -112,7 +121,7 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
     // create the shufflevector which returns all the elements from both the operands inorder
     vector<Constant*> constList;
     for(int i=0;i<2*veclen;i++){
-      Constant* tempMask = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),i,false);
+      Constant* tempMask = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),i,false);
       constList.push_back(tempMask);
     }
     Constant* newmask = ConstantVector::get(constList);
@@ -124,12 +133,14 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
     // 1. instrument the original mask for fault injection
     vector<Instruction*> corruptMaskList;
     vector<Value*>::iterator it = arglist.begin();
-    Constant* dummy = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),0,false);
+    //Constant* dummy = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),0,false);
+    Constant* dummy = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),0,false);
     arglist.insert(it,dummy); // arg1 - a placeholder, gets updated in the loop
 
     // arg# 3
     int tempIdxLimit = (int)log2((float)2*veclen);
-    Constant* idxLimitVal = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),tempIdxLimit,false);
+    //Constant* idxLimitVal = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),tempIdxLimit,false);
+    Constant* idxLimitVal = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),tempIdxLimit,false);
     arglist[2]=idxLimitVal;
     Instruction* nextInstr = FaultInjector::getNextInstr(M,newshuffle);
     CallInst* callInst = NULL;
@@ -137,7 +148,8 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
     for(int i=0;i<masklen;i++){
       if(i>0 && isBroadcast(shufinstr)) continue;
       int tempMaskVal = shufinstr->getMaskValue(mask,i);
-      Constant* tempMask = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),tempMaskVal,false);
+      // Constant* tempMask = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),tempMaskVal,false);
+      Constant* tempMask = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),tempMaskVal,false);
       arglist[0]=tempMask;
       if(fnRef){
 	if(nextInstr){
@@ -169,7 +181,8 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
 	    ExtractElementInst::Create(newshuffle,corruptMaskList[i],"extractusingcorruptmask",nextInstr);
 	}
 
-	Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),i,false);
+	//Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),i,false);
+	Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),i,false);
 	insertinto = \
 	  InsertElementInst::Create(insertinto,newextract,idx,"newinsert",nextInstr);
       } else {
@@ -180,7 +193,8 @@ Instruction* MaskFaults::performInstrumentation(Module *M, CLData* Cl, FunctionL
 	  newextract = \
 	    ExtractElementInst::Create(newshuffle,corruptMaskList[i],"extractusingcorruptmask",instr->getParent());
 	}
-	Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),i,false);
+	//Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(*unwrap(LLVMGetGlobalContext())),i,false);
+	Constant* idx = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()),i,false);
 	insertinto = \
 	  InsertElementInst::Create(insertinto,newextract,idx,"newinsert",instr->getParent());
       }
