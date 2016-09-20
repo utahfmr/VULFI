@@ -272,7 +272,9 @@ inline FILE* getFD(const char* fname, const char* mode){
 
 // splits a string based on a delimiter and provides an element by index
 inline char* getStrFieldByIndex(char* currentStr, const char* delim, int idx){
-  char temp[1024];
+  static char temp[1024];
+  //char temp[1024];
+  //char* temp = (char*)malloc(1024*sizeof(char)) ;
   char* result;
   int i=-1;
   strcpy(temp,currentStr);
@@ -312,6 +314,7 @@ inline void printParams(void){
 // key function which reads fi params from fi.in and init global vars
 inline void processParams(const char* name, const char* value){
   if(!strcmp(name,"fia")){
+    printf("FIA = %s\n", name);
     if(!strcmp(value,"CBR")){
       fialg = FI_CBR;
     } else if(!strcmp(value,"ABR")){
