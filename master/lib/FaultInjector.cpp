@@ -4,6 +4,7 @@
 using namespace llvm;
 using namespace std;
 
+
 map<BasicBlock*,Instruction*> FaultInjector::getExitBBs(CLData* Cl, FunctionList *Fl){
   map<BasicBlock*,Instruction*> exitBBList;
   Function* fnMain = Fl->getFiFnMain();
@@ -82,7 +83,7 @@ Value* FaultInjector::getAllMaskOn(Module* M, Instruction* instr){
   Value* allMaskOn = NULL;
   Type* ty = instr->getType();
   if(ty->isIntegerTy(1)){
-    allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(getGlobalContext(),32));
+    allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(instr->getType()->getContext(),32));
   } else if(ty->isIntegerTy() && !ty->isIntegerTy(1)){
     allMaskOn = ConstantInt::getAllOnesValue(ty);
   } else if(ty->isFloatTy() || ty->isDoubleTy()){
@@ -91,9 +92,9 @@ Value* FaultInjector::getAllMaskOn(Module* M, Instruction* instr){
     DataLayout dl = DataLayout(M);
     unsigned addrsz = dl.getPointerSizeInBits();
     if(addrsz==32){
-      allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(getGlobalContext(),32));
+      allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(instr->getType()->getContext(),32));
     } else if(addrsz==64){
-      allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(getGlobalContext(),64));
+      allMaskOn = ConstantInt::getAllOnesValue(Type::getIntNTy(instr->getType()->getContext(),64));
     }
   }
   return allMaskOn;
@@ -120,10 +121,10 @@ Instruction* FaultInjector::prepareInstrForFaultInjection(Module *M, CLData* Cl,
   string instrString;
   llvm::raw_string_ostream rso(instrString);
   instrClone->print(rso);
-  Constant *instrName = ConstantDataArray::getString(getGlobalContext(),instrString,true);
+  Constant *instrName = ConstantDataArray::getString(instr->getType()->getContext(),instrString,true);
   GlobalVariable *instrNameGlobal = new GlobalVariable(*M,instrName->getType(),true,
 						       GlobalValue::InternalLinkage,instrName,"instrname");
-  Constant *nullvalue = Constant::getNullValue(IntegerType::getInt32Ty(getGlobalContext()));
+   Constant *nullvalue = Constant::getNullValue(IntegerType::getInt32Ty(instrName->getType()->getContext()));
   vector<Constant*> gepParams;
   gepParams.push_back(nullvalue);
   gepParams.push_back(nullvalue);
@@ -325,7 +326,7 @@ bool FaultInjector::injectVectorFaults(Module *M, Instruction* instr, CLData* Cl
     // 1. Extract element
     // 2. Corrupt Element
     // 3. Insert back the element
-    Value* idx = ConstantInt::get(IntegerType::getInt32Ty(getGlobalContext()),i);
+    Value* idx = ConstantInt::get(IntegerType::getInt32Ty(instr->getType()->getContext()) , i);
     if(eTy->isIntegerTy(1)){
       if(nextInstr){
 	extInst = ExtractElementInst::Create(appendInstr,idx,"extract",nextInstr);
@@ -495,13 +496,13 @@ CastInst* FaultInjector::createCastInstByInst(Module *M, Instruction* instrClone
   if(tyID == Type::IntegerTyID && ty->isIntegerTy(1)){
     fnRef = Fl->getFiFnIntTy1();
     castCmpToInt = CastInst::CreateZExtOrBitCast(instrClone,
-						 Type::getInt32Ty(getGlobalContext()),"castcmptoint",nextInstr);
+						 Type::getInt32Ty(instrClone->getType()->getContext()),"castcmptoint",nextInstr);
     if(castCmpToInt && fnRef){
       arglist[0]=castCmpToInt; //overwrite with the actual value
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,nextInstr);
       callInst->setCallingConv(CallingConv::C);
       CastInst* castInttoCmp = CastInst::CreateTruncOrBitCast(callInst,
-							      Type::getInt1Ty(getGlobalContext()),"castinttocmp",nextInstr);
+							      Type::getInt1Ty(instrClone->getType()->getContext()),"castinttocmp",nextInstr);
       return castInttoCmp;
     }
   }
@@ -526,13 +527,13 @@ IntToPtrInst* FaultInjector::createCastPtrInstByInst(Module *M, Instruction* ins
       errs() << "\n32-bit addressing mode found!\n";
       #endif
       fnRef = Fl->getFiFnIntTy32();
-      castTy = Type::getInt32Ty(getGlobalContext());
+      castTy = Type::getInt32Ty(instrClone->getType()->getContext());
     } else if(addrsz == 64){ // 64-bit addresses
 	  #ifdef DEBUG
       errs() << "\n64-bit addressing mode found!\n";
       #endif
       fnRef = Fl->getFiFnIntTy64();
-      castTy = Type::getInt64Ty(getGlobalContext());
+      castTy = Type::getInt64Ty(instrClone->getType()->getContext());
     } else {
       errs() << "Error:addressing mode should either be 32-bit or 64-bit!!\n";
       exit(-1);
@@ -593,13 +594,13 @@ CastInst* FaultInjector::createCastInstByBB(Module *M, Instruction* instrClone,
   if(tyID == Type::IntegerTyID && ty->isIntegerTy(1)){
     fnRef = Fl->getFiFnIntTy1();
     castCmpToInt = CastInst::CreateZExtOrBitCast(instrClone,
-						 Type::getInt32Ty(getGlobalContext()),"castcmptoint",parent);
+						 Type::getInt32Ty(instrClone->getType()->getContext()),"castcmptoint",parent);
     if(castCmpToInt && fnRef){
       arglist[0]=castCmpToInt;
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,parent);
       callInst->setCallingConv(CallingConv::C);
       CastInst* castInttoCmp = CastInst::CreateTruncOrBitCast(callInst,
-							      Type::getInt1Ty(getGlobalContext()),"castinttocmp",parent);
+							      Type::getInt1Ty(instrClone->getType()->getContext()),"castinttocmp",parent);
       return castInttoCmp;
     }
   }
@@ -623,13 +624,13 @@ IntToPtrInst* FaultInjector::createCastPtrInstByBB(Module *M, Instruction* instr
       errs() << "\n32-bit addressing mode found!\n";
       #endif
       fnRef = Fl->getFiFnIntTy32();
-      castTy = Type::getInt32Ty(getGlobalContext());
+      castTy = Type::getInt32Ty(instrClone->getType()->getContext());
     } else if(addrsz == 64){ // 64-bit addresses
       #ifdef DEBUG
       errs() << "\n64-bit addressing mode found!\n";
       #endif
       fnRef = Fl->getFiFnIntTy64();
-      castTy = Type::getInt64Ty(getGlobalContext());
+      castTy = Type::getInt64Ty(instrClone->getType()->getContext());
     } else {
       errs() << "Error:addressing mode should either be 32-bit or 64-bit!!\n";
       exit(-1);
