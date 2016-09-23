@@ -1,7 +1,0 @@
-# To build and run example, run below command:
-	make VULFI_SRC_DIR=<complete_path_having_vulfi_src_code> VULFI_INSTALL_DIR=<directory where VULFI library is installed>
-	
-	example:-
-	make VULFI_SRC_DIR=$HOME/apps/vulfi/master VULFI_INSTALL_DIR=/usr/local/lib
-	
-# To clean all examples, simply run the command:- make clean
