@@ -2,7 +2,7 @@
 
 ## Getting Started with VULFI -- version 1.0
 ### Software Dependencies
-* LLVM (version >= 3.2)
+* LLVM (version = 3.9)
 * CMake (version >= 3.0) 
 * Python (version >= 2.7)
 * Doxygen (version >= 1.8.9)
@@ -25,8 +25,8 @@ git clone https://github.com/utahfmr/VULFI.git <vulfi dir>
 ```
 where \<vulfi dir\> is the directory where you want vulfi source code to live.
 
-##### Step 2: Choose the correct version of VULFI. 
-If you would like to build VULFI using the latest LLVM version then go to "master" folder else refer to one of the folder starting with the prefix "LLVM_" representing your LLVM version.
+If you would like to build VULFI using older versions of LLVM version then go
+to http://tinyurl.com/vulfi-llvm-32-to-38 and refer to one of the folder starting with the prefix "LLVM_" representing your LLVM version.
 
 ```
 cd <vulfi dir>/master
