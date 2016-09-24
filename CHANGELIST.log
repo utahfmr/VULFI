@@ -1,0 +1,9 @@
+
+Version 1.1
+-------------
+- Remove older versions of code and save it to dropbox (http://tinyurl.com/vulfi-llvm-32-to-38) for offile use.
+- Bug-fix for a regression caused due to removal of getGlobalContext() API in LLVM 3.9.
+
+Version 1.0
+--------------
+- Release initial version.
