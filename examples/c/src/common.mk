@@ -14,6 +14,15 @@ CXX_FLAGS = -o3
 INCLUDE_DIRS=-I$(VULFI_SRC_DIR)/runtime/ -I$(BUILD_DIR)/ 
 LIBS = -lm
 
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+	LIBSUFFIX="so"
+endif
+ifeq ($(UNAME), Darwin)
+		LIBSUFFIX="dylib"
+endif
+
 all: mkd cc lnk ld exe
 cc: cc1 cc2 cc3
 lnk: lnk1
@@ -54,21 +63,21 @@ lnk1:
 # LOAD FAULT INJECTION PASS
 ################################
 ld1:    
-	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.so -vulfi -fn $(FN_LIST) \
+	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.$(LIBSUFFIX) -vulfi -fn $(FN_LIST) \
 	-fsa "data" -lang "C" -dbgf "dbgData_"$(EX_NAME)"_data.csv" < \
 	$(BUILD_DIR)/$(EX_NAME)_corrupt.bc > \
 	$(BUILD_DIR)/$(EX_NAME)_"data"_inject.bc
 	llc $(BUILD_DIR)/$(EX_NAME)_"data"_inject.bc -filetype=obj
 
 ld2:    
-	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.so -vulfi -fn $(FN_LIST) \
+	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.$(LIBSUFFIX) -vulfi -fn $(FN_LIST) \
 	-fsa "ctrl" -lang "C" -dbgf "dbgData_"$(EX_NAME)"_ctrl.csv" < \
 	$(BUILD_DIR)/$(EX_NAME)_corrupt.bc > \
 	$(BUILD_DIR)/$(EX_NAME)_"ctrl"_inject.bc
 	llc $(BUILD_DIR)/$(EX_NAME)_"ctrl"_inject.bc -filetype=obj
 
 ld3:    
-	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.so -vulfi -fn $(FN_LIST) \
+	opt -load $(VULFI_INSTALL_DIR)/LLVMVulfi.$(LIBSUFFIX) -vulfi -fn $(FN_LIST) \
 	-fsa "addr" -lang "C" -dbgf "dbgData_"$(EX_NAME)"_addr.csv" < \
 	$(BUILD_DIR)/$(EX_NAME)_corrupt.bc > \
 	$(BUILD_DIR)/$(EX_NAME)_"addr"_inject.bc
