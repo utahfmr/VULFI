@@ -43,7 +43,8 @@ bool FaultInjector::insertCalltoPrintinMain(CLData* Cl, FunctionList *Fl){
       FnName = "printFaultSitesStat";
       CallInst* callInst1 = CallInst::Create(callFn,arglist,Twine(FnName),currentInstr);
       if(callInst1){
-	callInst1->setCallingConv(CallingConv::C);
+              callInst1->setDebugLoc(currentInstr->getDebugLoc());
+              callInst1->setCallingConv(CallingConv::C);
       }
 
       // insert call to printFaultInjectionStat()
@@ -51,7 +52,8 @@ bool FaultInjector::insertCalltoPrintinMain(CLData* Cl, FunctionList *Fl){
       FnName = "printFaultInjectionStat";
       CallInst* callInst2 = CallInst::Create(callFn,arglist,Twine(FnName),currentInstr);
       if(callInst2){
-	callInst2->setCallingConv(CallingConv::C);
+              callInst2->setCallingConv(CallingConv::C);
+              callInst2->setDebugLoc(currentInstr->getDebugLoc());
       }
 
       // if both call creation succeed then set the flag to true
@@ -470,6 +472,7 @@ CallInst* FaultInjector::createCallInstByInst(Module *M, Instruction* currentIns
   if(fnRef){
     CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,nextInstr);
     callInst->setCallingConv(CallingConv::C);
+    callInst->setDebugLoc(nextInstr->getDebugLoc());
     return callInst;
   }
   return NULL;
@@ -501,6 +504,7 @@ CastInst* FaultInjector::createCastInstByInst(Module *M, Instruction* instrClone
       arglist[0]=castCmpToInt; //overwrite with the actual value
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,nextInstr);
       callInst->setCallingConv(CallingConv::C);
+      callInst->setDebugLoc(nextInstr->getDebugLoc());
       CastInst* castInttoCmp = CastInst::CreateTruncOrBitCast(callInst,
 							      Type::getInt1Ty(instrClone->getType()->getContext()),"castinttocmp",nextInstr);
       return castInttoCmp;
@@ -543,6 +547,7 @@ IntToPtrInst* FaultInjector::createCastPtrInstByInst(Module *M, Instruction* ins
       arglist[0]=castPtrToInt;
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,nextInstr);
       callInst->setCallingConv(CallingConv::C);
+      callInst->setDebugLoc(nextInstr->getDebugLoc());
       IntToPtrInst* castInttoPtr = new IntToPtrInst(callInst,ty,"castinttoptr",nextInstr);
       return castInttoPtr;
     }
@@ -578,6 +583,7 @@ CallInst* FaultInjector::createCallInstByBB(Module *M, Instruction* instr, Funct
   if(fnRef){
     callInst = CallInst::Create(fnRef,arglist,callFnName,parent);
     callInst->setCallingConv(CallingConv::C);
+    callInst->setDebugLoc(instr->getDebugLoc());
   }
   return callInst;
 }
@@ -599,6 +605,7 @@ CastInst* FaultInjector::createCastInstByBB(Module *M, Instruction* instrClone,
       arglist[0]=castCmpToInt;
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,parent);
       callInst->setCallingConv(CallingConv::C);
+      callInst->setDebugLoc(instrClone->getDebugLoc());
       CastInst* castInttoCmp = CastInst::CreateTruncOrBitCast(callInst,
 							      Type::getInt1Ty(instrClone->getType()->getContext()),"castinttocmp",parent);
       return castInttoCmp;
@@ -640,6 +647,7 @@ IntToPtrInst* FaultInjector::createCastPtrInstByBB(Module *M, Instruction* instr
       arglist[0]=castPtrToInt;
       CallInst* callInst = CallInst::Create(fnRef,arglist,callFnName,parent);
       callInst->setCallingConv(CallingConv::C);
+      callInst->setDebugLoc(instrClone->getDebugLoc());
       IntToPtrInst* castInttoPtr = new IntToPtrInst(callInst,ty,"castinttoptr",parent);
       return castInttoPtr;
     }
